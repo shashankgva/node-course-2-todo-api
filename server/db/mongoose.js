@@ -2,7 +2,15 @@ var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp');
+var connect_str;
+
+if (process.env.PORT) {
+	connect_str = 'mongodb://shashankgva:Trexp@rk1@ds159100.mlab.com:59100/todoapp';
+} else {
+	connect_str = 'mongodb://localhost:27017/TodoApp';
+}
+
+mongoose.connect(connect_str);
 
 module.exports = {
 	mongoose
