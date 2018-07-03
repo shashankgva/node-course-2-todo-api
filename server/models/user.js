@@ -65,13 +65,24 @@ UserSchema.statics.findByToken = function (token) {
 		// return new Promise(resolve, reject) => {
 		// 	reject('Rejected');
 		// };
-		return Promise.reject('Rejected');
+		return Promise.reject(e);
 	}
 
 	return User.findOne({
 		'_id' : decoded._id,
 		'tokens.token': token,
 		'tokens.access' : 'auth'
+	});
+};
+
+UserSchema.methods.removeToken = function (token) {
+	var user = this;
+	return user.update({
+		$pull: {
+			tokens: {
+				token
+			}
+		}
 	});
 };
 
@@ -95,6 +106,8 @@ UserSchema.statics.findByCredentials = function (email, password) {
 		});
 	});
 };
+
+
 
 UserSchema.pre('save', function(next) {
 	let user = this;
